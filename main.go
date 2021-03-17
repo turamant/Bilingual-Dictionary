@@ -16,7 +16,6 @@ func main() {
 		fmt.Println("Menu: ")
 		fmt.Println("0 - Create new Base Data(BD)")
 		fmt.Println("1 - Show all records from BD")
-		fmt.Println("111 - Show ЯЯЯall records from BD")
 		fmt.Println("2 - Add record into BD")
 		fmt.Println("3 - Edit record in BD")
 		fmt.Println("4 - Delete record")
@@ -24,8 +23,12 @@ func main() {
 		fmt.Println("6 - Quit")
 
 		var choice int
-		fmt.Println("Ваш выбор: ")
+		fmt.Println("Your choice: ")
 		fmt.Scan(&choice)
+		if choice == 6{
+			fmt.Println("Good bye!")
+			break
+		}
 		switch choice {
 		case 0:
 			createBaseData()
@@ -45,32 +48,30 @@ func main() {
 		case 5:
 			deleteAll()
 			break
-		case 6:
-			fmt.Println("Good bye!")
 		default:
-			fmt.Println("Нет такого выбора, повторите!")
+			fmt.Println("There is no such choice, from!")
 			break
 		}
 
 	}
 }
 
+/* function Create BaseData */
 func createBaseData(){
 	fmt.Println("createBasedata")
 	database, err := sql.Open("sqlite3", "./basedata.db")
-	if err != nil {
+	if err != nil{
 		panic(err)
 	}
 	defer database.Close()
-	fmt.Println("CREATE TABLE ")
-	table, err := database.Exec("CREATE TABLE dictionary (eng text ,rus text)")
-
-	if err != nil {
+	tab, err := database.Exec("CREATE TABLE dictionary (eng text ,rus text)")
+	if err != nil{
 		panic(err)
 	}
-	fmt.Println(table)
+	fmt.Println(tab.LastInsertId())
 }
 
+/* function Show Records from BaseData */
 func showRecords(){
 	fmt.Println("---====ZZZ showRecords ZZZ ====---")
 	database, err := sql.Open("sqlite3", "./basedata.db")
@@ -83,10 +84,8 @@ func showRecords(){
 		panic(err)
 	}
 	defer rows.Close()
-
 	var engl string
 	var rusl string
-
 	for rows.Next(){
 		err := rows.Scan(&engl, &rusl)
 		if err != nil{
@@ -97,41 +96,35 @@ func showRecords(){
 		}
 		fmt.Println("===================")
 	}
-
+/* function Record data into BaseData */
 func recordDataBaseData() {
 	fmt.Println("recordDataBaseData")
-
 	var eng_L, rus_L string
-	fmt.Println("введите анг слово: ")
+	fmt.Println("enter English word: ")
 	fmt.Fscan(os.Stdin, &eng_L)
-	fmt.Println("введите анг русское слово: ")
+	fmt.Println("enter Russian word: ")
 	fmt.Fscan(os.Stdin, &rus_L)
-
 	database, err := sql.Open("sqlite3", "./basedata.db")
 	if err != nil {
 		panic(err)
 	}
 	defer database.Close()
-	//statement, err := database.Exec("INSERT INTO dictionary VALUES  ('write','писать')")
 	statement, err := database.Prepare("INSERT INTO dictionary (eng, rus) VALUES (?, ?)")
 	if err != nil {
 		panic(err)
 	}
 	statement.Exec(eng_L, rus_L)
-	//statement, err := database.Exec("INSERT INTO dictionary (eng, rus) VALUES  ('write','писать')")
-	//fmt.Println(statement.LastInsertId())
-	//fmt.Println(statement.RowsAffected())
-
 }
 
+/* function Update records from BaseData */
 func updateEngSlovar(){
 	fmt.Println("updateEngSlovar")
 }
- func deleteEngSlovar() {
+/* function Delete records from BaseData */
+func deleteEngSlovar() {
 	 fmt.Println("deleteEngSlovar")
 }
-
+/* function Delete All Records from  BaseData */
 func deleteAll(){
 	fmt.Println("deleteAll")
 }
-
