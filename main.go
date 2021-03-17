@@ -80,7 +80,7 @@ func randWords(filename string){
 	        slov_rand[engword]=rusword
 	    }
 	} 
-
+/* Writing words to a file */
 func recordWords(sl map[string]string, filename string){
         var engword, rusword string
 
