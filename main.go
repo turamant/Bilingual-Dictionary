@@ -6,24 +6,20 @@ import (
 	"io"
 )
 
-
+/*   ====== This is main ============   */
 func main(){
-	
 	filename:= "slovar.dat"
-	
-	
+
 	var slovar map[string]string
-	//var p_sl  *map[string]string
-	
-    	fmt.Println("Это программа изучения анг.языка по карточкам слов")
 	slovar = make(map[string]string)
-	
-	
+	//var p_sl  *map[string]string
 	//p_sl = &slovar
-	
+
+	fmt.Println("This is a program for learning English by word cards")
+
 	var i int
 	for i != 9 {
-	    fmt.Println("Выберите <1> - для записи <2> - для просмотра")
+	    fmt.Println("Select <1> - to record <2> - to view")
 	    fmt.Scan(&i)
             switch i {
 		case 0:
@@ -46,6 +42,7 @@ func main(){
 
 }
 
+/* File creation function*/
 func createFileWords(filename string){
     file ,err := os.Create(filename)
 	if err != nil {
@@ -53,17 +50,16 @@ func createFileWords(filename string){
 	    os.Exit(1)
 	} 
 	defer file.Close()
-    
 }
 
+/*Random word generator function*/
 func randWords(filename string){
 	var engword string
 	var rusword string
 	
 	var slov_rand map[string]string
 	slov_rand = make(map[string]string)
-	
-	
+
 	file, err := os.Open(filename)
 	if err != nil {
 	    fmt.Println(err)
@@ -85,16 +81,13 @@ func randWords(filename string){
 	    }
 	} 
 
-
-
-
 func recordWords(sl map[string]string, filename string){
         var engword, rusword string
 
-	fmt.Println("Введите слово на английском")
+	fmt.Println("Enter a word in English")
 	fmt.Scan(&engword)
 
-	fmt.Println("Введите перевод на русском")
+	fmt.Println("Enter translation in Russian")
 	fmt.Scan(&rusword)
 
 	sl[engword]=rusword
@@ -107,11 +100,11 @@ func recordWords(sl map[string]string, filename string){
 	defer file.Close()
 	
 	for k, v := range sl{
-	    fmt.Println("Пишу в файл")
+	    fmt.Println("I write to file")
 	    fmt.Fprintf(file, "%s\t%s\n", k, v)
 	}
 }
-
+/* View all words from a file */
 func viewWords(sl map[string]string, filename string){
 	var engword string
 	var rusword string
@@ -121,7 +114,6 @@ func viewWords(sl map[string]string, filename string){
 	    os.Exit(1)
 	}
 	defer file.Close()
-	
 	for{
 	    _, err = fmt.Fscanf(file,"%s\t%s\n", &engword, &rusword )
 	    if err != nil{
